@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+  # Frontend
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - product-service
+      - order-service
+    networks:
+      - app-network
+
+  # Product Service
+  product-service:
+    build: ./services/product-service
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=ecommerce_demo
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+  # Order Service
+  order-service:
+    build: ./services/order-service
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=ecommerce_demo
+      - PRODUCT_SERVICE_URL=http://product-service:3001
+    depends_on:
+      - mysql
+      - product-service
+    networks:
+      - app-network
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=ecommerce_demo
+    volumes:
+      - ./database/schema:/docker-entrypoint-initdb.d
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
