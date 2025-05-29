@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: product-service
-        image: ${REGISTRY}/ecommerce-product-service:${TAG}
+        image: ecommerce-cicd-demo-product-service:local
         ports:
         - containerPort: 3001
         env:

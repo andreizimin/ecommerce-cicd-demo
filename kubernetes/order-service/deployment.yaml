@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: order-service
-        image: ${REGISTRY}/ecommerce-order-service:${TAG}
+        image: ecommerce-cicd-demo-order-service:local
         ports:
         - containerPort: 3002
         env:

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: ${REGISTRY}/ecommerce-frontend:${TAG}
+        image: ecommerce-cicd-demo-frontend:local
         ports:
         - containerPort: 80
         resources:
